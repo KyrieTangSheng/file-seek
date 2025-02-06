@@ -10,3 +10,10 @@ It runs entirely on your machine, ensuring full privacy while giving you a cyber
 ✅ Local-First – No internet needed. Runs fully offline & private.
 ✅ Cyber-Style UI – Terminal aesthetic for CLI lovers, with optional desktop or browser UI.
 ✅ Zero Setup – Works out of the box. No need to manage databases or indexes manually.
+
+📖 Why Neon-Arc?
+✅ Blazing Fast – Searches take milliseconds.
+✅ Privacy First – Runs entirely offline, no cloud storage required.
+✅ AI-Powered – Finds content inside PDFs, scanned docs, and images.
+✅ Lightweight – No bloated dependencies, runs smoothly on any system.
+✅ Cyber-Cool Aesthetic – Designed for developers & power users.
