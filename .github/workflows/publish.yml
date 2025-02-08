@@ -33,24 +33,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install build twine pytest
 
-      - name: Install package dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install -e .
+      - name: Install package
+        run: pip install -e .
 
       - name: Run tests
-        run: |
-          pytest tests/
+        run: pytest tests/
 
       - name: Build package
         run: python -m build
 
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1 
-      
+        uses: pypa/gh-action-pypi-publish@release/v1
+
       - name: Create Tag Automatically
         id: create_tag
         run: |
-          VERSION="v1.0.0"  # Change this for new releases
+          VERSION="v0.1.0"  # Change this for new releases
           git tag $VERSION
           git push origin $VERSION
