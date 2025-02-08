@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fileseek"
+version = "0.1.0"
+authors = [
+  { name = "TangSheng", email = "tangsheng001018@gmail.com" }
+]
+description = "FileSeek – AI-Powered Local Document Archive&Search"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+keywords = ["search", "AI", "OCR", "semantic", "offline"]
+dependencies = [
+  "faiss-cpu>=1.7.4",
+  "chromadb>=0.4.22",
+  "numpy>=1.24.0",
+  "sentence-transformers>=2.2.0",
+  "torch>=2.0.0",
+  "tqdm>=4.65.0", 
+  "python-magic>=0.4.27",
+  "chardet>=4.0.0",
+  "pdfplumber>=0.7.4",
+  "pytesseract>=0.3.10",
+  "pdf2image>=1.16.3",
+  "Pillow>=9.5.0",
+  "opencv-python>=4.8.0",
+  "rich>=13.3.5",
+  "click>=8.1.3",
+  "watchdog>=2.1.9",
+  "protobuf>=3.12.0,<4.0.0"
+]
+
+[project.scripts]
+fileseek = "fileseek.cli.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["fileseek*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+fileseek = ["py.typed"]
