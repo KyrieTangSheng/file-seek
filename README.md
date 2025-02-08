@@ -7,81 +7,84 @@ It runs entirely on your machine, ensuring full privacy while giving you a cyber
 ---
 
 ## 🔍 Key Features
-- ✅ **Instant Search** – Use natural language to find files & notes quickly.
-- ✅ **Automatic Ingestion** – Detects new or modified files automatically.
-- ✅ **AI-Powered Retrieval** – Uses OCR & semantic search for better results.
-- ✅ **Local-First** – No internet needed. Runs fully offline & private.
-- ✅ **Cyber-Style UI** – Terminal aesthetic for CLI lovers, with optional desktop or browser UI.
-- ✅ **Zero Setup** – Works out of the box. No need to manage databases or indexes manually.
+- ✅ **Smart Search** – Natural language search with semantic understanding
+- ✅ **Similar Document Finding** – Discover related documents automatically
+- ✅ **AI-Powered OCR** – Extract text from images and scanned PDFs
+- ✅ **Local-First** – Runs fully offline for complete privacy
+- ✅ **Zero Config** – Works out of the box with sensible defaults
+- ✅ **Real-time Monitoring** – Auto-detects new and modified files
 
 ---
 
 ## 📖 Why FileSeek?
-- ⚡ **Blazing Fast** – Searches take milliseconds.
-- 🔒 **Privacy First** – Runs entirely offline, no cloud storage required.
-- 🤖 **AI-Powered** – Finds content inside PDFs, scanned docs, and images.
-- 🪶 **Lightweight** – No bloated dependencies, runs smoothly on any system.
-- 💻 **Cyber-Cool Aesthetic** – Designed for developers & power users.
+- ⚡ **Blazing Fast** – Semantic search in milliseconds
+- 🔒 **Privacy First** – No cloud, no data sharing, fully local
+- 🤖 **AI-Powered** – Advanced OCR and semantic understanding
+- 🪶 **Lightweight** – Minimal dependencies, smooth performance
+- 💻 **Developer-Friendly** – Clean CLI with rich terminal UI
 
 ---
 
-## 🛠 Installation
+## 🛠 System Requirements
 
-### 1️⃣ Install via pip
+### Required Dependencies
+Make sure you have these system packages installed:
+
+**Ubuntu/Debian:**
 ```bash
-pip install fileseek
+sudo apt-get install tesseract-ocr poppler-utils libmagic1
 ```
 
-### 2️⃣ Run the Archivist
+**Fedora:**
 ```bash
-fileseek ingest ~/Documents
+sudo dnf install tesseract poppler-utils file-libs
 ```
 
-### 3️⃣ Search for Documents
+**macOS:**
 ```bash
-fileseek query "project report"
+brew install tesseract poppler libmagic
+```
+
+**Windows:**
+```powershell
+# Using Chocolatey (Run as Administrator)
+choco install tesseract poppler libmagic
 ```
 
 ---
 
 ## 🚀 Quick Start
-FileSeek lets you store and retrieve documents with a simple CLI.
 
-### 🗄 Ingest Files
-Automatically detect new or modified files and add them to the archive:
+### 1️⃣ Process Documents
+Add documents to the archive:
 ```bash
-fileseek ingest ~/MyFiles
+fileseek process -r /path/to/documents
 ```
 
-**Supports:** PDFs, text files, images, and scanned documents.
+**Supports:** PDFs, text files, images (with OCR), and scanned documents
 
-### 🔍 Search with Natural Language
-Find any document instantly using a semantic search engine:
+### 2️⃣ Search Documents
+Find documents using natural language:
 ```bash
-fileseek query "find the tax return from 2022"
+fileseek search "find my notes on machine learning"
 ```
 
-📄 *Returns the most relevant documents even if filenames don't match!*
+### 3️⃣ Find Similar Documents
+Discover documents similar to a reference file:
+```bash
+fileseek similar /path/to/reference/file
+```
 
-### 👀 Preview Files
-List all stored files:
+### 4️⃣ Monitor for Changes
+Automatically process new, modified, or deleted files:
+```bash
+fileseek watch /path/to/watch
+```
+
+### 5️⃣ List All Processed Documents
+View all archived documents:
 ```bash
 fileseek list
-```
-
-### 🛠 Optional: Enable Auto-Watcher
-Automatically process new files in the background:
-```bash
-fileseek watch ~/Documents
-```
-💡 *This will detect and process files in real time as they are added or modified.*
-
----
-
-## 🔧 Configuration
-FileSeek is zero-config by default, but you can tweak settings:
-```bash
-fileseek config set storage_path=~/FileSeekData
 ```
 
 ---
@@ -89,62 +92,38 @@ fileseek config set storage_path=~/FileSeekData
 ## 📦 Run from Source
 ```bash
 git clone https://github.com/yourusername/fileseek.git
-
-pip install -r requirements.txt
-
-python run.py process ~/Documents
+pip install -e .
 ```
 
-### 🚀 Quick Start with Source
-
-### 🗄 Process Files
-Add documents to the archive:
+Now you can use all commands directly:
 ```bash
-python run.py process -r ~/Documents
+fileseek process ~/Documents
+fileseek search "find my course note on machine learning"
+fileseek similar ~/Documents/project_plan.pdf
+fileseek watch ~/Documents
+fileseek list
+fileseek validate
 ```
 
-**Supports:** PDFs, text files, images, and scanned documents.
 
-### 🔍 Search with Natural Language
-Find documents using semantic search:
+## ⚙️ Configuration
+FileSeek is zero-config by default but highly customizable:
+
 ```bash
-python run.py search "find the relevant documents of natural language processing"
+# Set custom storage location
+fileseek config set storage_path=~/FileSeekData
+
+# Enable debug logging
+fileseek config set logging.level=DEBUG
+
+# Set OCR language (ISO 639-2 codes)
+fileseek config set ocr.languages=["eng","fra"]
 ```
 
-📄 *Returns the most relevant documents even if filenames don't match!*
+Key Configuration Options:
+- `storage_path`: Where to store the document index
+- `ocr.languages`: Languages for OCR processing
+- `search.max_results`: Maximum number of search results
+- `monitoring.watch_interval`: File monitoring frequency
 
-### 🔄 Find Similar Documents
-Find documents similar to a reference file:
-```bash
-python run.py similar ~/Documents/project_plan.pdf
-```
-
-### 👀 Preview Files
-List all stored files:
-```bash
-python run.py list
-```
-
-### ✅ Validate Archive
-Check archive integrity:
-```bash
-python run.py validate -r ~/Documents
-```
-
-### 👀 Watch for Changes
-Automatically process new or modified files:
-```bash
-python run.py watch -r ~/Documents
-```
-💡 *Detects and processes files in real time as they are added, modified, or deleted.*
-
-### 🔧 Configuration
-```bash
-python run.py config set storage_path=~/FileSeekData
-```
-
-### 📄 Get Document Info
-Get detailed information about a specific document:
-```bash
-python run.py info ~/Documents/sample.pdf
-```
+---

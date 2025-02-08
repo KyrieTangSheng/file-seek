@@ -1,3 +1,72 @@
+# Python build artifacts
+*.py[cod]
+__pycache__/
+*.so
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Virtual environments
+venv/
+env/
+.env/
+.venv/
+ENV/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+.project
+.pydevproject
+.settings/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Project specific
+.fileseek/
+*.db
+*.sqlite
+*.sqlite3
+*.faiss
+*.index
+temp/
+logs/
+*.log
+
+# OS specific
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp
+*~
+
+# Documentation
+docs/_build/
+site/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Current project specific files (from existing .gitignore)
 instructions.md
 c&c.md
 modules.md
+
+# Ignore Personal files
+c&c.md
+modules.md
+instructions.md
+DEVELOPMENT.md
