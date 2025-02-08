@@ -36,8 +36,13 @@ jobs:
       - name: Install package
         run: pip install -e .
 
-      - name: Run tests
-        run: pytest tests/
+      - name: Run Tests (Skip if none)
+        run: |
+          if [ -d "tests" ] && [ "$(ls -A tests)" ]; then
+            pytest tests/
+          else
+            echo "No tests found. Skipping..."
+          fi
 
       - name: Build package
         run: python -m build
