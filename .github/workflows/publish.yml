@@ -47,3 +47,10 @@ jobs:
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1 
+      
+      - name: Create Tag Automatically
+        id: create_tag
+        run: |
+          VERSION="v1.0.0"  # Change this for new releases
+          git tag $VERSION
+          git push origin $VERSION

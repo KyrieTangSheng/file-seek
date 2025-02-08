@@ -12,7 +12,22 @@ description = "FileSeek – AI-Powered Local Document Archive&Search"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.11"
-keywords = ["search", "AI", "OCR", "semantic", "offline"]
+keywords = [
+    "document-management",
+    "semantic-search",
+    "vector-search",
+    "ocr",
+    "document-processing",
+    "file-monitoring",
+    "text-extraction",
+    "pdf-processing",
+    "local-search",
+    "offline-search",
+    "document-indexing",
+    "file-archival",
+    "text-analysis",
+    "document-similarity"
+]
 dependencies = [
   "faiss-cpu>=1.7.4",
   "chromadb>=0.4.22",
