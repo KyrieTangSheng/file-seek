@@ -5,6 +5,9 @@ import logging
 from datetime import datetime
 import time
 import logging.handlers
+import sys
+import platform
+from importlib.metadata import version
 
 from fileseek.core.archivist import Archivist
 from fileseek.core.config import ConfigManager
@@ -14,7 +17,11 @@ from fileseek.pipeline.file_detector import FileDetector
 from fileseek.watchers.watchers import WatchManager, FileWatcher, WatcherEvent
 from fileseek.core.system_deps import DependencyChecker
 
-VERSION = "0.1.0"
+try:
+    __version__ = version("fileseek")
+except ImportError:
+    __version__ = "unknown"
+
 class FileSeekCLI:
     """FileSeek Command Line Interface."""
     
@@ -28,8 +35,8 @@ class FileSeekCLI:
     def initialize(self, config_path: Optional[str] = None):
         """Initialize the system."""
         try:
-            # Display banner
-            self.ascii.get_banner(VERSION)
+            # Display banner with version from package
+            self.ascii.get_banner(__version__)
             
             # Initialize archivist
             self.archivist = Archivist(config_path)
@@ -45,6 +52,7 @@ ui = UIHelpers()
 @click.group()
 @click.option('--config', '-c', type=click.Path(exists=True), help='Path to config file')
 @click.option('--verbose', '-v', is_flag=True, help='Enable verbose output')
+@click.version_option(version=__version__, prog_name="FileSeek")
 @click.pass_context
 def cli(ctx, config: Optional[str], verbose: bool):
     """FileSeek - Document Processing and Search System"""
@@ -521,6 +529,17 @@ def watch(cli: FileSeekCLI, paths: List[str], recursive: bool, patterns: List[st
     except Exception as e:
         cli.ui.print_error(f"Watch failed: {e}")
         raise click.Abort()
+
+@cli.command()
+def version():
+    """Show detailed version information"""
+    click.echo(f"""
+FileSeek Version Information:
+----------------------------
+Version: {__version__}
+Python: {sys.version.split()[0]}
+Platform: {platform.platform()}
+    """)
 
 def main():
     """Main entry point for the CLI."""

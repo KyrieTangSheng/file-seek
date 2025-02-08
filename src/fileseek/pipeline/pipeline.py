@@ -342,20 +342,38 @@ class ProcessingPipeline:
             # Handle Word documents (.docx)
             elif mime_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
                 # Skip temporary Word files
-                if Path(file_info.path).name.startswith('~$'):
-                    logging.info(f"Skipping temporary Word file: {file_info.path}")
-                    return None
-                
                 try:
+                    file_name = Path(file_info.path).name
+                    if file_name.startswith('~$'):
+                        logging.info(f"Skipping temporary Word file: {file_name}")
+                        return None
+                        
+                    # Convert path to string with proper encoding
+                    doc_path = str(Path(file_info.path).resolve())
+                    
                     from docx import Document
-                    doc = Document(file_info.path)
-                    text = '\n'.join(paragraph.text for paragraph in doc.paragraphs)
+                    doc = Document(doc_path)
+                    
+                    # Extract text from paragraphs
+                    paragraphs = []
+                    for para in doc.paragraphs:
+                        try:
+                            if para.text.strip():
+                                paragraphs.append(para.text)
+                        except Exception as e:
+                            logging.warning(f"Skipping paragraph due to encoding error: {e}")
+                            continue
+                            
+                    text = '\n'.join(paragraphs)
                     if text.strip():
-                        logging.info(f"Successfully extracted text from Word document: {file_info.path}")
+                        logging.info(f"Successfully extracted text from Word document: {file_name}")
                         return text
-                    logging.warning(f"Word document appears to be empty: {file_info.path}")
+                    
+                    logging.warning(f"Word document appears to be empty: {file_name}")
+                    return None
+                    
                 except Exception as e:
-                    logging.error(f"Word document text extraction failed: {e}")
+                    logging.error(f"Word document text extraction failed for {Path(file_info.path).name}: {str(e)}")
                     return None
             
             else:
