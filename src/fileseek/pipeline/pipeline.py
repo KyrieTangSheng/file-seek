@@ -313,6 +313,51 @@ class ProcessingPipeline:
                         logging.info(f"Successfully read text file with {encoding} encoding: {file_info.path}")
                         return text
                 
+            # Handle Excel files
+            elif mime_type in ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']:
+                try:
+                    text_content = []
+                    if mime_type == 'application/vnd.ms-excel':
+                        import xlrd
+                        workbook = xlrd.open_workbook(file_info.path)
+                        for sheet in workbook.sheets():
+                            for row in range(sheet.nrows):
+                                text_content.append('\t'.join(str(sheet.cell_value(row, col)) for col in range(sheet.ncols)))
+                    else:
+                        from openpyxl import load_workbook
+                        workbook = load_workbook(filename=file_info.path, read_only=True, data_only=True)
+                        for sheet in workbook.worksheets:
+                            for row in sheet.rows:
+                                text_content.append('\t'.join(str(cell.value) if cell.value is not None else '' for cell in row))
+                    
+                    text = '\n'.join(text_content)
+                    if text.strip():
+                        logging.info(f"Successfully extracted text from Excel file: {file_info.path}")
+                        return text
+                    
+                except Exception as e:
+                    logging.error(f"Excel text extraction failed: {e}")
+                    return None
+            
+            # Handle Word documents (.docx)
+            elif mime_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                # Skip temporary Word files
+                if Path(file_info.path).name.startswith('~$'):
+                    logging.info(f"Skipping temporary Word file: {file_info.path}")
+                    return None
+                
+                try:
+                    from docx import Document
+                    doc = Document(file_info.path)
+                    text = '\n'.join(paragraph.text for paragraph in doc.paragraphs)
+                    if text.strip():
+                        logging.info(f"Successfully extracted text from Word document: {file_info.path}")
+                        return text
+                    logging.warning(f"Word document appears to be empty: {file_info.path}")
+                except Exception as e:
+                    logging.error(f"Word document text extraction failed: {e}")
+                    return None
+            
             else:
                 logging.warning(f"Unsupported mime type: {mime_type} for file: {file_info.path}")
                 return None
